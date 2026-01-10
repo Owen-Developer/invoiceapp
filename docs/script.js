@@ -102,6 +102,7 @@ async function getUser(){
 
 
         if(document.querySelector(".home")){
+            document.querySelector(".home-container").style.opacity = "1";
             if(userData){
                 document.querySelector(".home-name").textContent = userData.name;
             }
