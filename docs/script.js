@@ -56,6 +56,9 @@ function daysDifference(date1, date2) {
     return diffDays;
 }
 
+if(document.querySelector(".home") && !localStorage.getItem("token")){
+    window.location.href = "/login.html";
+}
 async function getUser(){
     async function checkup(){
         try {
@@ -99,7 +102,9 @@ async function getUser(){
 
 
         if(document.querySelector(".home")){
-            document.querySelector(".home-name").textContent = userData.name;
+            if(userData){
+                document.querySelector(".home-name").textContent = userData.name;
+            }
             document.querySelector(".home-pfp").addEventListener("click", () => {
                 localStorage.clear();
                 window.location.href = "/login.html";
