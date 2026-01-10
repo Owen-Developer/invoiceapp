@@ -14,6 +14,10 @@ const axios = require("axios");
 const qs = require("qs");
 const jwt = require("jsonwebtoken");
 const twilio = require('twilio');
+const OpenAI = require('openai');
+const openaiClient = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
 const client = twilio(
     process.env.TWILIO_ACCOUNT_SID,
     process.env.TWILIO_AUTH_TOKEN
@@ -564,12 +568,13 @@ app.post("/api/reply", (req, res) => {
                 console.error(err);
             }
 
-            db.query("select * from invoices where xero_id = ?", [xeroId], (err, result) => {
+            db.query("select * from invoices where xero_id = ?", [xeroId], async (err, result) => {
                 if(err){
                     console.error(err);
                 }
 
                 if(result[0] && result[0].cancelled == "no"){
+                    /*
                     let intents = [
                         ["paid", "i paid", "payment sent", "sent payment", "done"],
                         ["forgot", "will pay", "later", "tomorrow", "will send", "can pay"],
@@ -601,10 +606,48 @@ app.post("/api/reply", (req, res) => {
     
                     if(highest == 0) winnerIdx = 4;
                     sendSms(messages[winnerIdx], from);
+                    */
+                    let prompt = `
+                        You are an automated assistant replying to customers about overdue invoices via SMS.
+
+                        Rules you MUST follow:
+                        - Reply politely and concisely.
+                        - Keep the message short and natural, like a normal human SMS.
+                        - Always aim to move toward payment or a clear commitment.
+                        - Offer a payment plan only if the customer mentions difficulty paying.
+                        - Never threaten legal action.
+                        - Never argue.
+                        - Never change prices or amounts.
+                        - Never escalate beyond a polite reminder or suggestion.
+                        - Do not mention policies, systems, or that you are an AI.
+
+                        You may handle these situations:
+                        - Customer says they forgot
+                        - Customer says they will pay later
+                        - Customer says they cannot afford it
+                        - Customer asks a general question
+
+                        Tone:
+                        - Calm
+                        - Respectful
+                        - Helpful
+                        - Non-pushy
+
+                        Customer message:
+                        "${body}"
+
+                        Write the best possible SMS reply following all the rules above.
+                    `;
+
+                    const response = await client.responses.create({
+                        model: "gpt-4.1-mini",
+                        input: prompt
+                    });
+                    const aiResponse = response.output_text;
     
                     let conId = result[0].connection_id;
                     let invoiceId = result[0].id;
-                    db.query("insert into messages (xero_invoice_id, heading, para, type, date, customer_phone) values (?, ?, ?, ?, ?, ?)", [xeroId, "AI Response", messages[winnerIdx], "airesponse", getCurrentDate(), from], (err, result) => {
+                    db.query("insert into messages (xero_invoice_id, heading, para, type, date, customer_phone) values (?, ?, ?, ?, ?, ?)", [xeroId, "AI Response", aiResponse, "airesponse", getCurrentDate(), from], (err, result) => {
                         if(err){
                             console.error(err);
                         }

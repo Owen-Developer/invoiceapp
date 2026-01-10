@@ -229,60 +229,60 @@ async function getUser(){
                             document.querySelector(".det-modal").style.pointerEvents = "none";
                         });
 
+                        async function getChats(){
+                            const dataToSend = { xeroId: invoice.InvoiceID };
+                            try {
+                                const response = await fetch(url + `/api/get-chats`, {
+                                    method: 'POST',
+                                    credentials: 'include',
+                                    headers: { 
+                                        Authorization: `Bearer ${localStorage.getItem("token")}`,
+                                        'Content-Type': 'application/json', 
+                                    },
+                                    body: JSON.stringify(dataToSend), 
+                                });
+
+                                if(!response.ok){
+                                    const errorData = await response.json();
+                                    console.error('Error:', errorData.message);
+                                    return;
+                                }
+
+                                const data = await response.json();
+                                document.querySelector(".chat-ul").querySelectorAll(".chat-li").forEach(li => document.querySelector(".chat-ul").removeChild(li));
+                                data.messages.forEach(msg => {
+                                    let chatLi = document.createElement("div");
+                                    chatLi.classList.add("chat-li");
+                                    let iconStr = "robot";
+                                    if(msg.type == "response"){
+                                        iconStr = "message";
+                                    }
+                                    chatLi.innerHTML = `
+                                            <i class="fa-solid fa-${iconStr} chat-icon"></i>
+                                            <div>
+                                                <div class="chat-label">${msg.heading}</div>
+                                                <div class="chat-txt">${msg.para}</div>
+                                            </div>
+                                            <div class="chat-date">${convertDateFormat(msg.date)}</div>
+                                    `;
+                                    document.querySelector(".chat-ul").appendChild(chatLi);
+                                });
+                                if(data.messages.length == 0){
+                                    chatEmpty.style.display = "block";
+                                } else {
+                                    chatEmpty.style.display = "none";
+                                }
+                            } catch (error) {
+                                console.error('Error posting data:', error);
+                            }
+                        }
+                        getChats();
                         document.querySelector(".det-btn").addEventListener("click", () => {
                             document.querySelector(".det-modal").style.opacity = "0";
                             document.querySelector(".det-modal").style.pointerEvents = "none";
                             document.querySelector(".chat-modal").style.opacity = "1";
                             document.querySelector(".chat-modal").style.pointerEvents = "auto";
 
-                            async function getChats(){
-                                const dataToSend = { xeroId: invoice.InvoiceID };
-                                try {
-                                    const response = await fetch(url + `/api/get-chats`, {
-                                        method: 'POST',
-                                        credentials: 'include',
-                                        headers: { 
-                                            Authorization: `Bearer ${localStorage.getItem("token")}`,
-                                            'Content-Type': 'application/json', 
-                                        },
-                                        body: JSON.stringify(dataToSend), 
-                                    });
-
-                                    if(!response.ok){
-                                        const errorData = await response.json();
-                                        console.error('Error:', errorData.message);
-                                        return;
-                                    }
-
-                                    const data = await response.json();
-                                    document.querySelector(".chat-ul").querySelectorAll(".chat-li").forEach(li => document.querySelector(".chat-ul").removeChild(li));
-                                    data.messages.forEach(msg => {
-                                        let chatLi = document.createElement("div");
-                                        chatLi.classList.add("chat-li");
-                                        let iconStr = "robot";
-                                        if(msg.type == "response"){
-                                            iconStr = "message";
-                                        }
-                                        chatLi.innerHTML = `
-                                                <i class="fa-solid fa-${iconStr} chat-icon"></i>
-                                                <div>
-                                                    <div class="chat-label">${msg.heading}</div>
-                                                    <div class="chat-txt">${msg.para}</div>
-                                                </div>
-                                                <div class="chat-date">${convertDateFormat(msg.date)}</div>
-                                        `;
-                                        document.querySelector(".chat-ul").appendChild(chatLi);
-                                    });
-                                    if(data.messages.length == 0){
-                                        chatEmpty.style.display = "block";
-                                    } else {
-                                        chatEmpty.style.display = "none";
-                                    }
-                                } catch (error) {
-                                    console.error('Error posting data:', error);
-                                }
-                            }
-                            getChats();
                         });
                         document.querySelector(".det-card").addEventListener("click", () => document.querySelector(".det-btn").click());
                         document.querySelector(".det-cancel").addEventListener("click", () => {
