@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/515deb5b82.js" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="images/icons/favicon.png" type="image/x-icon">
+    <title>Invoice App | Home</title>
+</head>
+<body class="log-body">
+    <div class="signup"></div>
+
+    <div class="log-container">
+        <img src="/images/icons/favicon.png" class="log-logo" />
+        <div class="log-title">Create Account!</div>
+        <div class="log-txt log-l-desc">Hello there, Please enter your details.</div>
+
+        <form class="log-form" id="signForm">
+            <div class="log-label">Company Name</div>
+            <input type="text" name="name" placeholder="Enter your name" class="log-input">
+
+            <div style="height: 18px;"></div>
+
+            <div class="log-label">Email</div>
+            <input type="text" name="email" placeholder="Enter your email" class="log-input">
+            <div class="log-error" id="emailError">This email is already registered.</div>
+
+            <div style="height: 18px;"></div>
+
+            <div class="log-label">Password</div>
+            <input type="password" name="password" placeholder="Password" class="log-input">
+            <div class="log-error" id="serverError">Something went wrong, try again.</div>
+
+            <button style="display: block;" type="submit" class="btn-log">Sign in</button>
+
+            <div class="log-txt log-l-alr" style="margin-top: 30px;">Already have an account? <a href="/login.html" class="log-txt" id="resetPassword">login</a>.</div>
+        </form>
+    </div>
+
+
+    <script src="script.js"></script>
+</body>
+</html>

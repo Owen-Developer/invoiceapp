@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/515deb5b82.js" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="images/icons/favicon.png" type="image/x-icon">
+    <title>Invoice App | Home</title>
+</head>
+<body>
+    <div class="top-cover"></div>
+    <div class="home"></div>
+
+    <div class="home-container">
+        <div class="home-green">
+            <div class="home-top">
+                <div class="home-pfp">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <div>
+                    <div class="home-welcome">Welcome back</div>
+                    <div class="home-name">David Wilson</div>
+                </div>
+                <i class="fa-regular fa-bell home-noti">
+                </i>
+            </div>
+
+            <div class="home-stat">
+                <div class="home-stat-top">
+                    <div>
+                        <div class="home-stat-label">Total Recovered</div>
+                        <div class="home-stat-num">£0.00</div>
+                    </div>
+                    <div class="home-stat-bar" style="opacity: 0;">
+                        <span style="height: 49px;"></span>
+                        <span style="height: 27px;"></span>
+                        <span style="height: 39px;"></span>
+                        <span style="height: 64px;"></span>
+                        <span style="height: 39px;"></span>
+                        <span style="height: 27px;"></span>
+                    </div>
+                </div>
+                <div class="home-stat-low">
+                    <div class="home-stat-flex">
+                        <i class="fa-solid fa-coins home-stat-icon" style="background-color: hsl(6, 71%, 97%); color: hsl(6, 71%, 62%);"></i>
+                        <div>
+                            <div class="home-stat-label">Waiting</div>
+                            <div class="home-stat-num">£0.00</div>
+                        </div>
+
+                        <i class="fa-solid fa-pen-to-square home-stat-icon" style="margin-left: auto;"></i>
+                        <div>
+                            <div class="home-stat-label">Total Due</div>
+                            <div class="home-stat-num">0</div>
+                        </div>
+                    </div>
+                    <div class="home-stat-btn button" id="refreshBtn">Refresh Invoices</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="home-inv">
+            <div class="home-inv-head">Recent activity</div>
+            <div class="home-inv-flex">
+                <div class="home-inv-option home-inv-option-active">All</div>
+                <div class="home-inv-option">Past due</div>
+                <div class="home-inv-option">Recovered</div>
+                <div class="home-inv-option">Excluded</div>
+            </div>
+            <div class="home-inv-col">
+                <!-- 
+                    <div class="home-inv-wrapper">
+                        <div>
+                            <div class="home-inv-name">Simon Peter</div>
+                            <div class="home-inv-date">Due 10/01/2026</div>
+                        </div>
+                        <div>
+                            <div class="home-inv-price">$650</div>
+                            <div class="home-inv-status home-inv-status-paid">Success</div>
+                        </div>
+                    </div>
+                 -->
+            </div>
+        </div>
+
+        <div class="con-modal modal-modal">
+            <div class="con-wrapper modal-wrapper">
+                <i class="fa-solid fa-xmark con-xmark modal-xmark"></i>
+
+                <img src="images/Xero_logo.png" class="con-img" />
+                <div class="con-title">Connect your <span>Xero</span> account to start recovering payments</div>
+
+                <div class="con-btn button">Connect</div>
+            </div>
+        </div>
+
+        <div class="det-modal modal-modal">
+            <div class="det-wrapper modal-wrapper">
+                <i class="fa-solid fa-xmark det-xmark modal-xmark"></i>
+
+                <div class="det-status det-status-pending">Pending</div>
+                <div class="det-id">INV #729356</div>
+                <div class="det-date">Due 10/01/2026</div>
+                <div class="det-card">
+                    <div>
+                        <div class="det-label">Ordered by</div>
+                        <div class="det-name">John Barry</div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right det-chevron"></i>
+                </div>
+                <div class="det-list">
+                    <div class="det-list-head">Invoice details</div>
+                    <div class="det-li">
+                        <div class="det-li-label">Phone number</div>
+                        <div class="det-li-value">07272 5232</div>
+                    </div>
+                    <div class="det-li">
+                        <div class="det-li-label">Payment link</div>
+                        <a href="#" class="det-li-value">https://xero.com/125...</a>
+                    </div>
+                    <div class="det-li">
+                        <div class="det-li-label">Recovery status</div>
+                        <div class="det-li-value">promised payment</div>
+                    </div>
+                    <div class="det-li">
+                        <div class="det-li-label">Payment date</div>
+                        <div class="det-li-value">unpaid</div>
+                    </div>
+                    <div class="det-li">
+                        <div class="det-li-label">Amount owed</div>
+                        <div class="det-li-value">£230</div>
+                    </div>
+                </div>
+                <div class="det-btn button">View AI Chat</div>
+                <div class="det-cancel button">Cancel Recovery</div>
+            </div>
+        </div>
+
+        <div class="chat-modal modal-modal">
+            <div class="chat-wrapper modal-wrapper">
+                
+                <div class="chat-top">
+                    <div class="chat-title">Chat History</div>
+                    
+                    <i class="fa-solid fa-xmark chat-xmark modal-xmark"></i>
+                </div>
+
+                <div class="chat-ul">
+                    <!-- 
+                        <div class="chat-li">
+                            <i class="fa-solid fa-robot chat-icon"></i>
+                            <div>
+                                <div class="chat-label">Initial warning</div>
+                                <div class="chat-txt">Your invoice for Dyson's Ltd is 7 days overdue.</div>
+                            </div>
+                            <div class="chat-date">17/01/2026</div>
+                        </div>
+                     -->
+                    <div class="emp-wrapper" id="chatEmpty" style="display: none; padding-bottom: 30px;">
+                        <img src="images/nodata.svg" class="emp-icon" style="width: 240px;" />
+                        <div class="emp-head">No Messages</div>
+                        <div class="emp-para">We have not yet notified this customer<br> that their invoice is overdue.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div style="height: 220px;"></div>
+    <script src="script.js"></script>
+</body>
+</html>

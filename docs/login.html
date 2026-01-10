@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/515deb5b82.js" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="images/icons/favicon.png" type="image/x-icon">
+    <title>Invoice App | Home</title>
+</head>
+<body class="log-body">
+    <div class="login"></div>
+
+    <div class="log-container">
+        <img src="/images/icons/favicon.png" class="log-logo" />
+        <div class="log-title">Welcome Back!</div>
+        <div class="log-txt log-l-desc">Hello there, Please login or <a href="/signup.html" class="log-txt">sign up</a>.</div>
+
+        <form class="log-form" id="logForm">
+            <div class="log-label">Email</div>
+            <input type="text" name="email" placeholder="Enter your email" class="log-input">
+            <div class="log-error" id="emailError">This email is not registered.</div>
+
+            <div style="height: 18px;"></div>
+
+            <div class="log-label">Password</div>
+            <input type="password" name="password" placeholder="Password" class="log-input">
+            <div class="log-error" id="passwordError">Incorrect password.</div>
+            <div class="log-error" id="serverError">Something went wrong, try again.</div>
+
+            <button style="display: block;" type="submit" class="btn-log">Sign in</button>
+
+            <div class="log-txt log-l-alr" style="margin-top: 30px;">Need to reset your password? <a class="log-txt" id="resetPassword">Click Here</a></div>
+        </form>
+
+        <form class="log-form" id="sendForm" style="display: none; opacity: 0;">
+            <div class="log-label">Email</div>
+            <input type="text" name="email" placeholder="Enter Email" class="log-input">
+            <div class="log-error" id="sendError">This email is not registered.</div>
+
+            <button style="display: block;" type="submit" class="btn-log">Send Code</button>
+        </form>
+
+        <form class="log-form" id="verForm" style="display: none; opacity: 0;">
+            <div class="log-label">Verification Code</div>
+            <input type="text" name="code" placeholder="Enter Code" class="log-input">
+            <div class="log-error" id="codeError">Incorrect code.</div>
+
+            <div style="height: 18px;"></div>
+
+            <div class="log-label">New Password</div>
+            <input type="password" name="password" placeholder="Password" class="log-input">
+
+            <button style="display: block;" type="submit" class="btn-log">Log in</button>
+        </form>
+    </div>
+
+
+    <script src="script.js"></script>
+</body>
+</html>
