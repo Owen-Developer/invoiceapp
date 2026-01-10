@@ -1,7 +1,7 @@
 
 
 const gitName = "";
-let url = "https://nextdesignwebsite.com/invoiceapp";
+let url = "https://servers.nextdesignwebsite.com/invoiceapp";
 if(window.location.href.includes("localhost")){
     url = "";
 }
