@@ -12,7 +12,7 @@
     <div class="top-cover"></div>
     <div class="home"></div>
 
-    <div class="home-container" style="opacity: 0;">
+    <div class="home-container">
         <div class="home-green">
             <div class="home-top">
                 <div class="home-pfp">
@@ -55,7 +55,7 @@
                             <div class="home-stat-num">0</div>
                         </div>
                     </div>
-                    <div class="home-stat-btn button" id="refreshBtn">Refresh Invoices</div>
+                    <div class="home-stat-btn button refresh-btn">Refresh Invoices</div>
                 </div>
             </div>
         </div>
@@ -157,7 +157,7 @@
                             <div class="chat-date">17/01/2026</div>
                         </div>
                      -->
-                    <div class="emp-wrapper" id="chatEmpty" style="display: none; padding-bottom: 30px;">
+                    <div class="emp-wrapper chatEmpty" id="chatEmpty" style="display: none; padding-bottom: 30px;">
                         <img src="images/nodata.svg" class="emp-icon" style="width: 240px;" />
                         <div class="emp-head">No Messages</div>
                         <div class="emp-para">We have not yet notified this customer<br> that their invoice is overdue.</div>
@@ -166,6 +166,184 @@
             </div>
         </div>
     </div>
+
+    <div class="dash-container">
+        <div class="dash-green"></div>
+        <div class="dash-top">
+            <img src="images/main-logo.png" class="dash-logo" />
+        </div>
+
+        <div class="dash-flex">
+            <div class="dash-side">
+                <div class="dash-side-section dash-side-active"><i class="fa-solid fa-house"></i> Home</div>
+                <!-- 
+                    <div class="dash-side-section"><i class="fa-solid fa-file-invoice"></i> Invoices</div>
+                 -->
+                <div class="dash-side-section refresh-btn"><i class="fa-solid fa-arrows-rotate"></i> Refresh</div>
+                <a href="https://xero.com" target="_blank" class="dash-side-section"><i class="fa-solid fa-arrow-up-right-from-square"></i> View Xero</a>
+                <div class="dash-side-section" id="sideLogout"><i class="fa-solid fa-arrow-right-from-bracket"></i> Log out</div>
+            </div>
+
+            <div class="dash-col">
+                <div class="dash-stat">
+                    <div class="dash-stat-title">Recovery Statistics</div>
+
+                    <div class="dash-stat-flex">
+                        <div class="dash-stat-box">
+                            <i class="fa-solid fa-circle-dollar-to-slot"></i>
+                            <div class="dash-stat-head">Money Recovered</div> 
+                            <div class="dash-stat-txt">£0</div>
+                        </div>
+                        <div class="dash-stat-box">
+                            <i class="fa-solid fa-coins" style="background-color: hsl(6, 71%, 97%); color: hsl(6, 71%, 62%);"></i>
+                            <div class="dash-stat-head">Total Pending</div> 
+                            <div class="dash-stat-txt">£0</div>
+                        </div>
+                        <div class="dash-stat-box dash-stat-desktop">
+                            <i class="fa-solid fa-receipt" style="background-color: hsl(60, 71%, 92%); color: hsl(60, 71%, 41%);"></i>
+                            <div class="dash-stat-head">Recovered Invoices</div> 
+                            <div class="dash-stat-txt">0</div>
+                        </div>
+                        <div class="dash-stat-box">
+                            <i class="fa-solid fa-pen-to-square" style="background-color: hsl(224, 73%, 97%); color: hsl(224, 71%, 62%);"></i>
+                            <div class="dash-stat-head">Overdue Invoices</div> 
+                            <div class="dash-stat-txt">0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dash-table">
+                    <div class="dash-table-title">All Invoices</div>
+
+                    <div class="dash-table-top">
+                        <div class="dash-table-head dash-table-name">Name</div>
+                        <div class="dash-table-head">Amount due</div>
+                        <div class="dash-table-head">Status</div>
+                        <div class="dash-table-head">Due date</div>
+                        <div class="dash-table-head dash-table-action">Actions</div>
+                    </div>
+
+                    <div class="dash-table-ul">
+                        <!-- 
+                            <div class="dash-table-row">
+                                <div class="dash-table-txt">John Doe</div>
+                                <div class="dash-table-txt">£300.25</div>
+                                <div class="dash-table-txt">Past due</div>
+                                <div class="dash-table-txt">19/12/2025</div>
+                                <div class="dash-table-txt dash-table-elipse">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                            </div>
+                        -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="dash-right-wrapper">
+                <div class="dash-right-title">Recent Activity</div>
+
+                <div class="dash-right-ul">
+                    <!-- 
+                        <div class="dash-right-section">
+                            <div class="dash-right-hr">
+                                <span></span>
+                                <div></div>
+                            </div>
+                            <div class="dash-right-col">
+                                <div class="dash-right-time">Jan 11, 2026 at 5:35pm</div>
+                                <div class="dash-right-txt">We sent an AI response to +353852785232</div>
+                            </div>
+                        </div>
+                     -->
+                </div>
+            </div>
+        </div>
+
+        <div class="con-modal modal-modal">
+            <div class="con-wrapper modal-wrapper">
+                <i class="fa-solid fa-xmark con-xmark modal-xmark"></i>
+
+                <img src="images/Xero_logo.png" class="con-img" />
+                <div class="con-title">Connect your <span>Xero</span> account to start recovering payments</div>
+
+                <div class="con-btn button">Connect</div>
+            </div>
+        </div>
+
+        <div class="det-modal modal-modal">
+            <div class="det-wrapper modal-wrapper">
+                <i class="fa-solid fa-xmark det-xmark modal-xmark"></i>
+
+                <div class="det-status det-status-pending">Pending</div>
+                <div class="det-id">INV #729356</div>
+                <div class="det-date">Due 10/01/2026</div>
+                <div class="det-card">
+                    <div>
+                        <div class="det-label">Ordered by</div>
+                        <div class="det-name">John Barry</div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right det-chevron"></i>
+                </div>
+                <div class="det-list">
+                    <div class="det-list-head">Invoice details</div>
+                    <div class="det-li">
+                        <div class="det-li-label">Phone number</div>
+                        <div class="det-li-value">07272 5232</div>
+                    </div>
+                    <div class="det-li">
+                        <div class="det-li-label">Payment link</div>
+                        <a href="#" class="det-li-value">https://xero.com/125...</a>
+                    </div>
+                    <div class="det-li">
+                        <div class="det-li-label">Recovery status</div>
+                        <div class="det-li-value">promised payment</div>
+                    </div>
+                    <div class="det-li">
+                        <div class="det-li-label">Payment date</div>
+                        <div class="det-li-value">unpaid</div>
+                    </div>
+                    <div class="det-li">
+                        <div class="det-li-label">Amount owed</div>
+                        <div class="det-li-value">£230</div>
+                    </div>
+                </div>
+                <div class="det-btn button">View AI Chat</div>
+                <div class="det-cancel button">Cancel Recovery</div>
+            </div>
+        </div>
+
+        <div class="chat-modal modal-modal">
+            <div class="chat-wrapper modal-wrapper">
+                
+                <div class="chat-top">
+                    <div class="chat-title">Chat History</div>
+                    
+                    <i class="fa-solid fa-xmark chat-xmark modal-xmark"></i>
+                </div>
+
+                <div class="chat-ul">
+                    <!-- 
+                        <div class="chat-li">
+                            <i class="fa-solid fa-robot chat-icon"></i>
+                            <div>
+                                <div class="chat-label">Initial warning</div>
+                                <div class="chat-txt">Your invoice for Dyson's Ltd is 7 days overdue.</div>
+                            </div>
+                            <div class="chat-date">17/01/2026</div>
+                        </div>
+                     -->
+                    <div class="emp-wrapper chatEmpty" id="chatEmpty" style="display: none; padding-bottom: 30px;">
+                        <img src="images/nodata.svg" class="emp-icon" style="width: 240px;" />
+                        <div class="emp-head">No Messages</div>
+                        <div class="emp-para">We have not yet notified this customer<br> that their invoice is overdue.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 
 

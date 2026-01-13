@@ -7,6 +7,8 @@ if(window.location.href.includes("localhost")){
 }
 let params = new URLSearchParams(window.location.search);
 
+let mainCont;
+
 document.querySelectorAll(".modal-modal").forEach(modal => {
     modal.addEventListener("click", (e) => {
         if(!modal.querySelector(".modal-wrapper").contains(e.target)){
@@ -102,7 +104,18 @@ async function getUser(){
 
 
         if(document.querySelector(".home")){
-            document.querySelector(".home-container").style.opacity = "1";
+            mainCont = document.querySelector(".home-container");
+            let desktop = false;
+            if(window.innerWidth >= 1250){
+                desktop = true;
+                mainCont = document.querySelector(".dash-container");
+                mainCont.style.display = "flex";
+            } else {
+                mainCont.style.display = "block";
+            }
+            setTimeout(() => {
+                mainCont.style.opacity = "1";
+            }, 100);
             if(userData){
                 document.querySelector(".home-name").textContent = userData.name;
             }
@@ -112,8 +125,8 @@ async function getUser(){
             });
 
             if(!data.connection){
-                document.querySelector(".con-modal").style.opacity = "1";
-                document.querySelector(".con-modal").style.pointerEvents = "auto";
+                mainCont.querySelector(".con-modal").style.opacity = "1";
+                mainCont.querySelector(".con-modal").style.pointerEvents = "auto";
             } 
             else {
                 let dashData = {
@@ -136,6 +149,40 @@ async function getUser(){
                         checkup();
                     }
                     const phoneString = dbInvoice.phone_number;
+
+                    async function toggleExclusion(){
+                        let newValue = "yes";
+                        if(dbInvoice.cancelled == "yes") newValue = "no";
+                        const dataToSend = { id: dbInvoice.id, newValue: newValue };
+                        try {
+                            const response = await fetch(url + `/api/toggle-exclusion`, {
+                                method: 'POST',
+                                credentials: 'include',
+                                headers: { 
+                                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                                    'Content-Type': 'application/json', 
+                                },
+                                body: JSON.stringify(dataToSend), 
+                            });
+
+                            if (!response.ok) {
+                                const errorData = await response.json();
+                                console.error('Error:', errorData.message);
+                                return;
+                            }
+
+                            const data = await response.json();
+                            if(data.message == "success"){
+                                if(!desktop){
+                                    window.location.href = "/?invoice=" + dbInvoice.id;
+                                } else {
+                                    window.location.href = "/";
+                                }
+                            }
+                        } catch (error) {
+                            console.error('Error posting data:', error);
+                        }
+                    }
 
                     let newWrapper = document.createElement("div");
                     newWrapper.classList.add("home-inv-wrapper");
@@ -175,10 +222,10 @@ async function getUser(){
                     }
 
                     newWrapper.addEventListener("click", () => {
-                        document.querySelector(".det-modal").style.opacity = "1";
-                        document.querySelector(".det-modal").style.pointerEvents = "auto";
+                        mainCont.querySelector(".det-modal").style.opacity = "1";
+                        mainCont.querySelector(".det-modal").style.pointerEvents = "auto";
 
-                        document.querySelector(".det-wrapper").innerHTML = `
+                        mainCont.querySelector(".det-wrapper").innerHTML = `
                             <i class="fa-solid fa-xmark det-xmark modal-xmark"></i>
 
                             <div class="det-status det-status-${status.toLowerCase().replace(" ", "-")}">${status}</div>
@@ -224,9 +271,9 @@ async function getUser(){
                         } else {
                             document.querySelector(".det-cancel").style.display = "flex";
                         } 
-                        document.querySelector(".det-modal").querySelector(".modal-xmark").addEventListener("click", () => {
-                            document.querySelector(".det-modal").style.opacity = "0";
-                            document.querySelector(".det-modal").style.pointerEvents = "none";
+                        mainCont.querySelector(".det-modal").querySelector(".modal-xmark").addEventListener("click", () => {
+                            mainCont.querySelector(".det-modal").style.opacity = "0";
+                            mainCont.querySelector(".det-modal").style.pointerEvents = "none";
                         });
 
                         async function getChats(){
@@ -268,30 +315,73 @@ async function getUser(){
                                     document.querySelector(".chat-ul").appendChild(chatLi);
                                 });
                                 if(data.messages.length == 0){
-                                    chatEmpty.style.display = "block";
+                                    document.getElementById("chatEmpty").style.display = "block";
                                 } else {
-                                    chatEmpty.style.display = "none";
+                                    document.getElementById("chatEmpty").style.display = "none";
                                 }
                             } catch (error) {
                                 console.error('Error posting data:', error);
                             }
                         }
                         getChats();
-                        document.querySelector(".det-btn").addEventListener("click", () => {
-                            document.querySelector(".det-modal").style.opacity = "0";
-                            document.querySelector(".det-modal").style.pointerEvents = "none";
-                            document.querySelector(".chat-modal").style.opacity = "1";
-                            document.querySelector(".chat-modal").style.pointerEvents = "auto";
+                        mainCont.querySelector(".det-btn").addEventListener("click", () => {
+                            mainCont.querySelector(".det-modal").style.opacity = "0";
+                            mainCont.querySelector(".det-modal").style.pointerEvents = "none";
+                            mainCont.querySelector(".chat-modal").style.opacity = "1";
+                            mainCont.querySelector(".chat-modal").style.pointerEvents = "auto";
 
                         });
                         document.querySelector(".det-card").addEventListener("click", () => document.querySelector(".det-btn").click());
                         document.querySelector(".det-cancel").addEventListener("click", () => {
-                            async function toggleExclusion(){
-                                let newValue = "yes";
-                                if(dbInvoice.cancelled == "yes") newValue = "no";
-                                const dataToSend = { id: dbInvoice.id, newValue: newValue };
+                            toggleExclusion();
+                        });
+                    });
+
+                    if(desktop){
+                        let newRow = document.createElement("div");
+                        newRow.classList.add("dash-table-row");
+                        newRow.id = "rowinv-" + dbInvoice.id;
+
+                        newRow.innerHTML = `
+                            <div class="dash-table-txt dash-table-name">${invoice.Contact.Name}</div>
+                            <div class="dash-table-txt">£${invoice.AmountDue.toFixed(2)}</div>
+                            <div class="dash-table-txt">${status}</div>
+                            <div class="dash-table-txt">${convertDateFormat(invoice.DueDateString)}</div>
+                            <div class="dash-table-txt dash-table-elipse">
+                                <div class="dash-table-option">
+                                    <div class="dash-table-exclude">Exclude Recovery</div>
+                                    <div class="dash-table-chat" style="border: none;">View AI Chat</div>
+                                </div>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        `;
+                        document.querySelector(".dash-table-ul").appendChild(newRow);
+
+                        newRow.querySelector(".dash-table-elipse").addEventListener("click", () => {
+                            if(dbInvoice.recovered == "yes"){
+                                newRow.querySelector(".dash-table-exclude").style.display = "none";
+                            } else if(dbInvoice.cancelled == "yes"){
+                                newRow.querySelector(".dash-table-exclude").style.display = "block";
+                                newRow.querySelector(".dash-table-exclude").textContent = "Open Recovery";
+                            } else {
+                                newRow.querySelector(".dash-table-exclude").style.display = "block";
+                                newRow.querySelector(".dash-table-exclude").textContent = "Exclude Recovery";
+                            } 
+                            newRow.querySelector(".dash-table-option").style.opacity = "1";
+                            newRow.querySelector(".dash-table-option").style.pointerEvents = "auto";
+                        });
+                        newRow.querySelector(".dash-table-exclude").addEventListener("click", () => {
+                            toggleExclusion();
+                            newRow.querySelector(".dash-table-option").style.opacity = "0";
+                            newRow.querySelector(".dash-table-option").style.pointerEvents = "none";
+                        });
+                        newRow.querySelector(".dash-table-chat").addEventListener("click", () => {
+                            async function getChats(){
+                                const dataToSend = { xeroId: invoice.InvoiceID };
                                 try {
-                                    const response = await fetch(url + `/api/toggle-exclusion`, {
+                                    const response = await fetch(url + `/api/get-chats`, {
                                         method: 'POST',
                                         credentials: 'include',
                                         headers: { 
@@ -301,28 +391,82 @@ async function getUser(){
                                         body: JSON.stringify(dataToSend), 
                                     });
 
-                                    if (!response.ok) {
+                                    if(!response.ok){
                                         const errorData = await response.json();
                                         console.error('Error:', errorData.message);
                                         return;
                                     }
 
                                     const data = await response.json();
-                                    if(data.message == "success"){
-                                        window.location.href = "/?invoice=" + dbInvoice.id;
+                                    console.log("www");
+                                    mainCont.querySelector(".chat-ul").querySelectorAll(".chat-li").forEach(li => mainCont.querySelector(".chat-ul").removeChild(li));
+                                    data.messages.forEach(msg => {
+                                        let chatLi = document.createElement("div");
+                                        chatLi.classList.add("chat-li");
+                                        let iconStr = "robot";
+                                        if(msg.type == "response"){
+                                            iconStr = "message";
+                                        }
+                                        chatLi.innerHTML = `
+                                                <i class="fa-solid fa-${iconStr} chat-icon"></i>
+                                                <div>
+                                                    <div class="chat-label">${msg.heading}</div>
+                                                    <div class="chat-txt">${msg.para}</div>
+                                                </div>
+                                                <div class="chat-date">${convertDateFormat(msg.date)}</div>
+                                        `;
+                                        mainCont.querySelector(".chat-ul").appendChild(chatLi);
+                                    });
+                                    if(data.messages.length == 0){
+                                        mainCont.querySelector(".chatEmpty").style.display = "block";
+                                    } else {
+                                        mainCont.querySelector(".chatEmpty").style.display = "none";
                                     }
                                 } catch (error) {
                                     console.error('Error posting data:', error);
                                 }
                             }
-                            toggleExclusion();
+                            getChats();
+
+                            newRow.querySelector(".dash-table-option").style.opacity = "0";
+                            newRow.querySelector(".dash-table-option").style.pointerEvents = "none";
+                            mainCont.querySelector(".chat-modal").style.opacity = "1";
+                            mainCont.querySelector(".chat-modal").style.pointerEvents = "auto";
                         });
-                    });
+                        document.addEventListener("click", (e) => {
+                            if(!newRow.querySelector(".dash-table-elipse").contains(e.target)){
+                                newRow.querySelector(".dash-table-option").style.opacity = "0";
+                                newRow.querySelector(".dash-table-option").style.pointerEvents = "none";
+                            }
+                        });
+
+                        document.getElementById("sideLogout").addEventListener("click", () => {
+                            localStorage.clear();
+                            window.location.href = "/login.html";
+                        });
+                        if(userData?.notifications){
+                            userData.notifications.forEach(noti => {
+                                let newSection = document.createElement("div");
+                                newSection.classList.add("dash-right-section");
+                                newSection.innerHTML = `
+                                    <div class="dash-right-hr">
+                                        <span></span>
+                                        <div></div>
+                                    </div>
+                                    <div class="dash-right-col">
+                                        <div class="dash-right-time">${noti.full_date}</div>
+                                        <div class="dash-right-txt">${noti.title}</div>
+                                    </div>
+                                `;
+                                document.querySelector(".dash-right-ul").appendChild(newSection);
+                            });
+                        }
+                    }
                 });
                 if(params.get("invoice")){
                     document.getElementById("dbinv-" + params.get("invoice")).click();
                 }
-                document.querySelectorAll(".home-stat-num").forEach((num, idx) => {
+                mainCont.querySelectorAll(".home-stat-num, .dash-stat-txt").forEach((num, idx) => {
                     if(idx == 0){
                         num.textContent = "£" + dashData.recovered.toFixed(2);
                     }
@@ -331,6 +475,9 @@ async function getUser(){
                     }
                     if(idx == 2){
                         num.textContent = dashData.overdue;
+                    }
+                    if(idx == 3){
+                        num.textContent = dashData.recoveredList.length;
                     }
                 });
                 if(dashData.recoveredList.length >= 6){
@@ -387,13 +534,13 @@ async function getUser(){
                     });
                 });
 
-                document.getElementById("refreshBtn").addEventListener("click", async () => {
+                mainCont.querySelector(".refresh-btn").addEventListener("click", async () => {
                     await checkup();
                     //window.location.reload();
                 });
             }
 
-            document.querySelector(".con-btn").addEventListener("click", () => {
+            mainCont.querySelector(".con-btn").addEventListener("click", () => {
                 async function connectXero(){
                     try {
                         const response = await fetch(`${url}/api/redirect-xero`, {

@@ -59,6 +59,7 @@ body {
 
 /*/////////////////////// HOME SCREEN ///////////////////////*/
 .home-container {
+    display: none;
     opacity: 0;
     transition: 0.3s ease;
     width: 100%;
@@ -446,6 +447,7 @@ i.home-stat-icon {
     background-color: hsla(0, 0%, 0%, 0.3);
     display: flex;
     align-items: flex-end;
+    justify-content: center;
     opacity: 0;
     pointer-events: none;
     transition: 0.3s ease;
@@ -456,6 +458,7 @@ i.home-stat-icon {
     border-top-right-radius: 20px;
     background-color: white;
     width: 100%;
+    max-width: 500px;
     height: 450px;
     padding: 20px;
     display: flex;
@@ -930,8 +933,299 @@ body.log-body {
 }
 /*///////////////////////////////////////////////////////////////////////////////////*/
 
-/*/////////////////////// CONNECT SCREEN ///////////////////////*/
-/*//////////////////////////////////////////////////////////////*/
+/*/////////////////////// DESKTOP DASHBOARD ///////////////////////*/
+.dash-container {
+    padding: 50px 80px;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    display: none;
+    opacity: 0;
+    transition: 0.3s ease;
+    flex-direction: column;
+}
+.dash-green {
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: linear-gradient(to bottom, var(--bg-green), white);
+}
+.dash-top {
+    padding: 30px 0;
+    width: 100%;
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+}
+.dash-logo {
+    height: 55px;
+    width: auto;
+}
+.dash-flex {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    gap: 40px;
+}
+
+.dash-side {
+    flex-shrink: 0;
+    width: 250px;
+    padding: 18px 15px;
+    border-radius: 10px;
+    background-color: white;
+    border: 1px solid hsl(0, 0%, 88%);
+    box-shadow: 0 0 10px hsla(0, 0%, 0%, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.dash-side-section {
+    cursor: pointer;
+    border-radius: 6px;
+    width: 100%;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    color: hsl(0, 0%, 20%);
+    transition: 0.2s ease;
+}
+.dash-side-section:hover {
+    background-color: hsla(126, 42%, 85%, 0.3);
+}
+.dash-side-section i {
+    width: 32px;
+    font-size: 16px;
+    color: hsl(0, 0%, 30%);
+}
+.dash-side-active {
+    background-color: hsla(126, 42%, 85%, 0.5);
+}
+.dash-col {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.dash-stat {
+    width: 100%;
+    padding: 18px 20px;
+    border-radius: 10px;
+    background-color: white;
+    border: 1px solid hsl(0, 0%, 88%);
+    box-shadow: 0 0 10px hsla(0, 0%, 0%, 0.1);
+}
+.dash-stat-title {
+    font-size: 22px;
+    font-weight: 500;
+    color: hsl(0, 0%, 20%);
+    margin-bottom: 22px;
+}
+.dash-stat-flex {
+    width: 100%;
+    display: flex;
+    gap: 15px;
+}
+.dash-stat-box {
+    width: 100%;
+    padding: 18px 15px;
+    border: 1px solid hsl(0, 0%, 88%);
+    border-radius: 10px;
+}
+.dash-stat-box i {
+    width: 56px;
+    height: 56px;
+    border-radius: 5px;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: hsla(22, 100%, 57%, 0.1);
+    color: hsla(22, 100%, 57%, 0.8);
+}
+.dash-stat-head {
+    margin: 12px 0 8px;
+    font-size: 17px;
+    font-weight: 500;
+    color: hsl(0, 0%, 20%);
+}
+.dash-stat-txt {
+    font-size: 15px;
+    color: hsl(0, 0%, 30%);
+}
+
+.dash-table {
+    height: 100%;
+    overflow: auto;
+    width: 100%;
+    border-radius: 10px;
+    background-color: white;
+    border: 1px solid hsl(0, 0%, 88%);
+    box-shadow: 0 0 10px hsla(0, 0%, 0%, 0.1);
+    padding: 18px 0;
+    display: flex;
+    flex-direction: column;
+}
+.dash-table-title {
+    padding: 0 20px;
+    font-size: 22px;
+    font-weight: 500;
+    color: hsl(0, 0%, 20%);
+}
+.dash-table-top {
+    width: 100%;
+    display: flex;
+    padding: 20px 20px 10px;
+    border-bottom: 1px solid hsl(0, 0%, 88%);
+}
+.dash-table-head {
+    font-size: 15px;
+    color: hsl(0, 0%, 30%);
+    width: 100%;
+}
+.dash-table-ul {
+    margin-top: 8px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.dash-table-row {
+    cursor: pointer;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+}
+.dash-table-row:hover {
+    background-color: hsla(126, 42%, 85%, 0.5);
+}
+.dash-table-txt {
+    width: 100%;
+    padding-right: 20px;
+}
+.dash-table-name {
+    min-width: 180px;
+}
+.dash-table-elipse {
+    position: relative;
+    height: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.dash-table-elipse span {
+    width: 5px;
+    height: 5px;
+    border-radius: 100px;
+    background-color: hsl(0, 0%, 30%);
+}
+.dash-table-option {
+    opacity: 0;
+    pointer-events: none;
+    padding: 0 15px;
+    width: 190px;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    left: 0;
+    bottom: 25px;
+    background-color: white;
+    border: 1px solid hsl(0, 0%, 88%);
+    box-shadow: 0 0 10px hsla(0, 0%, 0%, 0.1);
+    border-radius: 6px;
+}
+.dash-table-option div {
+    padding: 10px 0;
+    border-bottom: 1px solid hsl(0, 0%, 88%);
+    font-size: 15px;
+    color: hsl(0, 0%, 20%);
+    transition: 0.2s ease;
+}
+.dash-table-option div:hover {
+    color: var(--primary);
+}
+
+.dash-right-wrapper {
+    flex-shrink: 0;
+    width: 320px;
+    background-color: white;
+    border: 1px solid hsl(0, 0%, 88%);
+    box-shadow: 0 0 10px hsla(0, 0%, 0%, 0.1);
+    padding: 18px 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+}
+.dash-right-title {
+    font-size: 22px;
+    font-weight: 500;
+    color: hsl(0, 0%, 20%);
+}
+.dash-right-ul {
+    margin-top: 15px;
+    padding-top: 5px;
+    height: 100%;
+    overflow: auto;
+    scrollbar-width: none;
+}
+.dash-right-ul::-webkit-scrollbar {
+    display: none;
+}
+.dash-right-section {
+    width: 100%;
+    display: flex;
+    gap: 14px;
+}
+.dash-right-hr {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.dash-right-hr span {
+    width: 7px;
+    height: 7px;
+    border-radius: 200px;
+    background-color: var(--primary);
+}
+.dash-right-hr div {
+    height: 100%;
+    width: 1px;
+    background-color: hsl(0, 0%, 88%);
+}
+.dash-right-col {
+    width: 100%;
+}
+.dash-right-time {
+    margin-top: -3px;
+    line-height: 1;
+    font-size: 14px;
+    color: hsl(0, 0%, 30%);
+}
+.dash-right-txt {
+    margin-top: 8px;
+    font-size: 15px;
+    font-weight: 500;
+    color: hsl(0, 0%, 20%);
+    margin-bottom: 25px;
+}
+
+.dash-container .modal-modal {
+    align-items: center;
+    justify-content: center;
+}
+.dash-container .modal-wrapper {
+    border-radius: 20px;
+    max-width: 500px;
+}
+/*/////////////////////////////////////////////////////////////////*/
 
 /*/////////////////////// CONNECT SCREEN ///////////////////////*/
 /*//////////////////////////////////////////////////////////////*/
@@ -941,3 +1235,34 @@ body.log-body {
 
 
 
+
+
+
+@media only screen and (max-width: 1560px){
+    .dash-container {
+        padding: 40px 25px;
+    }
+    .dash-flex {
+        gap: 25px;
+    }
+    .dash-stat-desktop {
+        display: none;
+    }
+}
+@media only screen and (max-width: 1400px){
+    .dash-side {
+        width: 210px;
+        padding: 18px 10px;
+    }
+    .dash-right-wrapper {
+        width: 280px;
+        padding: 18px 15px;
+    }
+    .dash-right-title {
+        font-size: 18px;
+    }
+    .dash-table-elipse, .dash-table-action {
+        width: 80px;
+        flex-shrink: 0;
+    }
+}
